@@ -32,12 +32,37 @@ gis = cv2.cvtColor(cv2.imread(GIS_DIR + gis_list[0]), cv2.COLOR_BGR2RGB)
 
 height, width = img.shape[0], img.shape[1]
 
+def sharpen(img):
+    # シャープの度合い
+    k = 1.0
+    # シャープ化するためのオペレータ
+    shape_operator = np.array([[0, -k, 0],
+    [-k, 1 + 4 * k, -k],
+    [0, -k, 0]])
+    
+    # 作成したオペレータを基にシャープ化
+    img_tmp = cv2.filter2D(img, -1, shape_operator)
+    img_shape = cv2.convertScaleAbs(img_tmp)
+    return img_shape
+
+# Sharpen image
+#img = sharpen(img)
+
+#fig = plt.figure(figsize=(10,10), dpi=200)
+#ax = fig.add_subplot(1,1,1)
+#ax.imshow(img)
+#ax.tick_params(labelbottom = False, bottom = False)
+#ax.tick_params(labelleft = False, left = False)
+#plt.savefig("sharpe_img.jpg")
+
 result = gis.copy()
 result[gis[:,:,0] < 220 ] = img[gis[:,:,0] < 220]
 
 road = np.zeros([height, width, 3], dtype = 'uint8')
 road[gis[:,:,0] < 220] = img[gis[:,:,0] < 220]
+road[gis[:,:,0] < 200] = 0
 r, g, b = road[:,:,0], road[:,:,1], road[:,:,2]
+
 
 # Plot 
 fig = plt.figure(figsize = (6, 8))
@@ -49,9 +74,12 @@ ax2.imshow(gis)
 plt.savefig('test.png')
 plt.show()
 
-fig = plt.figure(figsize=(10,10))
+fig = plt.figure(figsize=(10,10), dpi=100)
 ax = fig.add_subplot(1,1,1)
 ax.imshow(road)
+ax.tick_params(labelbottom = False, bottom = False)
+ax.tick_params(labelleft = False, left = False)
+plt.savefig("road2.jpg")
 plt.show()
 
 # Plot Histogram
