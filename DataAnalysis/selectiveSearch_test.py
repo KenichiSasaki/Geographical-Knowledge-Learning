@@ -17,7 +17,8 @@ height, width, channels = img.shape
 #img =imresize(img, (int(height/16), int(width/16)), interp="nearest")
 
 t0 = time.clock()
-img_lbl, regions = ss.selective_search(img, scale=30, sigma=0.1, min_size=40)
+scale, sigma, min_size = 80, 0.8, 80
+img_lbl, regions = ss.selective_search(img, scale, sigma, min_size)
 t1 = time.clock()
 
 print("time:", t1-t0, "s")
@@ -49,5 +50,5 @@ ax.set_title('Plot of Rectangle with Selective Search')
 plt.xlabel("width[pixel]")
 plt.ylabel("height[pixel]")
 plt.show()
-fig.savefig("full_scale_ss.png")
+fig.savefig("ss{0}_{1}_{2}.png".format(scale, sigma, min_size))
  
