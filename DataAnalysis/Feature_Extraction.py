@@ -29,8 +29,6 @@ SAVE_DIR = './output/'
 img_list = os.listdir(IMG_DIR)
 gis_list = os.listdir(GIS_DIR)
 
-
-
 def sharpen(img):
     # シャープの度合い
     k = 1.0
